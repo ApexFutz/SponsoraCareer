@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SponsoraCareer - Connect Sponsors & Dreamers</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SponsoraCareer</h1>
+            <p class="tagline">Connecting Sponsors with Dreamers</p>
+        </header>
+
+        <main class="auth-container">
+            <div class="auth-selection">
+                <h2>Choose Your Path</h2>
+                <div class="user-type-cards">
+                    <div class="user-card sponsor-card" onclick="showSignIn('sponsor')">
+                        <div class="card-icon">💼</div>
+                        <h3>I'm a Sponsor</h3>
+                        <p>Support talented individuals and make a difference in their careers</p>
+                        <button class="card-btn">Sign In as Sponsor</button>
+                    </div>
+                    
+                    <div class="user-card dreamer-card" onclick="showSignIn('dreamer')">
+                        <div class="card-icon">🌟</div>
+                        <h3>I'm a Dreamer</h3>
+                        <p>Showcase your talents and connect with sponsors who believe in you</p>
+                        <button class="card-btn">Sign In as Dreamer</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sponsor Sign In Form -->
+            <div id="sponsor-signin" class="signin-form hidden">
+                <div class="form-header">
+                    <button class="back-btn" onclick="showSelection()">&larr; Back</button>
+                    <h2>Sponsor Sign In</h2>
+                    <div class="user-type-indicator sponsor">💼 Sponsor</div>
+                </div>
+                
+                <form id="sponsor-form" onsubmit="handleSignIn(event, 'sponsor')">
+                    <div class="form-group">
+                        <label for="sponsor-email">Email Address</label>
+                        <input type="email" id="sponsor-email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sponsor-password">Password</label>
+                        <input type="password" id="sponsor-password" name="password" required>
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="sponsor-remember" name="remember">
+                        <label for="sponsor-remember">Remember me</label>
+                    </div>
+                    
+                    <button type="submit" class="signin-btn sponsor-btn">Sign In as Sponsor</button>
+                    
+                    <div class="form-links">
+                        <a href="#" onclick="showForgotPassword('sponsor')">Forgot Password?</a>
+                        <span>|</span>
+                        <a href="#" onclick="showSignUp('sponsor')">Create Sponsor Account</a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Dreamer Sign In Form -->
+            <div id="dreamer-signin" class="signin-form hidden">
+                <div class="form-header">
+                    <button class="back-btn" onclick="showSelection()">&larr; Back</button>
+                    <h2>Dreamer Sign In</h2>
+                    <div class="user-type-indicator dreamer">🌟 Dreamer</div>
+                </div>
+                
+                <form id="dreamer-form" onsubmit="handleSignIn(event, 'dreamer')">
+                    <div class="form-group">
+                        <label for="dreamer-email">Email Address</label>
+                        <input type="email" id="dreamer-email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dreamer-password">Password</label>
+                        <input type="password" id="dreamer-password" name="password" required>
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="dreamer-remember" name="remember">
+                        <label for="dreamer-remember">Remember me</label>
+                    </div>
+                    
+                    <button type="submit" class="signin-btn dreamer-btn">Sign In as Dreamer</button>
+                    
+                    <div class="form-links">
+                        <a href="#" onclick="showForgotPassword('dreamer')">Forgot Password?</a>
+                        <span>|</span>
+                        <a href="#" onclick="showSignUp('dreamer')">Create Dreamer Account</a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Success Message -->
+            <div id="success-message" class="success-message hidden">
+                <div class="success-icon">✅</div>
+                <h2 id="success-title">Welcome!</h2>
+                <p id="success-text">You have successfully signed in.</p>
+                <button onclick="showSelection()" class="back-to-home-btn">Back to Home</button>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 SponsoraCareer. Connecting dreams with opportunities.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
