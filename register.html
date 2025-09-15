@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - SponsoraCareer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="register.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SponsoraCareer</h1>
+            <p class="tagline">Connecting Sponsors with Dreamers</p>
+        </header>
+
+        <main class="register-container">
+            <!-- Step 1: User Type Selection -->
+            <div id="user-type-selection" class="registration-step active">
+                <div class="step-header">
+                    <button class="back-btn" onclick="window.location.href='index.html'">&larr; Back to Login</button>
+                    <h2>Create Your Account</h2>
+                    <div class="step-indicator">
+                        <span class="step active">1</span>
+                        <span class="step">2</span>
+                        <span class="step">3</span>
+                        <span class="step">4</span>
+                    </div>
+                </div>
+                
+                <div class="step-content">
+                    <h3>Choose Your Account Type</h3>
+                    <div class="user-type-cards">
+                        <div class="user-card sponsor-card" onclick="selectUserType('sponsor')">
+                            <div class="card-icon">💼</div>
+                            <h4>I'm a Sponsor</h4>
+                            <p>Support talented individuals and make a difference in their careers</p>
+                            <ul class="features-list">
+                                <li>✓ Browse dreamer profiles</li>
+                                <li>✓ Make funding offers</li>
+                                <li>✓ Track investment impact</li>
+                                <li>✓ Build meaningful connections</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="user-card dreamer-card" onclick="selectUserType('dreamer')">
+                            <div class="card-icon">🌟</div>
+                            <h4>I'm a Dreamer</h4>
+                            <p>Showcase your talents and connect with sponsors who believe in you</p>
+                            <ul class="features-list">
+                                <li>✓ Create compelling profile</li>
+                                <li>✓ Receive funding offers</li>
+                                <li>✓ Track your progress</li>
+                                <li>✓ Build your network</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Basic Information -->
+            <div id="basic-info-step" class="registration-step">
+                <div class="step-header">
+                    <button class="back-btn" onclick="previousStep()">&larr; Back</button>
+                    <h2>Basic Information</h2>
+                    <div class="step-indicator">
+                        <span class="step completed">1</span>
+                        <span class="step active">2</span>
+                        <span class="step">3</span>
+                        <span class="step">4</span>
+                    </div>
+                </div>
+
+                <div class="step-content">
+                    <div class="selected-type-indicator" id="selectedTypeIndicator">
+                        <span class="type-icon" id="selectedTypeIcon">💼</span>
+                        <span class="type-text" id="selectedTypeText">Sponsor Account</span>
+                    </div>
+
+                    <form id="basicInfoForm" class="registration-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name *</label>
+                                <input type="text" id="firstName" name="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name *</label>
+                                <input type="text" id="lastName" name="lastName" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                            <small class="form-help">We'll send a verification email to this address</small>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="password">Password *</label>
+                                <input type="password" id="password" name="password" required minlength="8">
+                                <small class="form-help">At least 8 characters</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm Password *</label>
+                                <input type="password" id="confirmPassword" name="confirmPassword" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <input type="text" id="location" name="location" placeholder="City, State/Country">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+1 (555) 123-4567">
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn secondary" onclick="previousStep()">Back</button>
+                            <button type="submit" class="btn primary">Continue</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Step 3: Profile Information -->
+            <div id="profile-info-step" class="registration-step">
+                <div class="step-header">
+                    <button class="back-btn" onclick="previousStep()">&larr; Back</button>
+                    <h2 id="profileStepTitle">Profile Information</h2>
+                    <div class="step-indicator">
+                        <span class="step completed">1</span>
+                        <span class="step completed">2</span>
+                        <span class="step active">3</span>
+                        <span class="step">4</span>
+                    </div>
+                </div>
+
+                <div class="step-content">
+                    <!-- Dreamer Profile Form -->
+                    <form id="dreamerProfileForm" class="registration-form profile-form" style="display: none;">
+                        <div class="form-group">
+                            <label for="dreamerBio">Tell us about yourself *</label>
+                            <textarea id="dreamerBio" name="bio" rows="4" required 
+                                placeholder="Share your background, passions, and what drives you..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dreamerGoal">Your Career Goal *</label>
+                            <textarea id="dreamerGoal" name="goal" rows="3" required 
+                                placeholder="Describe what you want to achieve and how sponsorship will help..."></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="dreamerSkills">Skills & Experience</label>
+                                <input type="text" id="dreamerSkills" name="skills" 
+                                       placeholder="e.g., JavaScript, Marketing, Design">
+                            </div>
+                            <div class="form-group">
+                                <label for="dreamerEducation">Education</label>
+                                <input type="text" id="dreamerEducation" name="education" 
+                                       placeholder="Your educational background">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="expectedDurationMin">Expected Duration (Months) *</label>
+                                <div class="duration-inputs">
+                                    <input type="number" id="expectedDurationMin" name="expectedDurationMin" 
+                                           min="1" max="60" placeholder="Min" required>
+                                    <span>to</span>
+                                    <input type="number" id="expectedDurationMax" name="expectedDurationMax" 
+                                           min="1" max="60" placeholder="Max" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="weeklyNeed">Weekly Financial Need ($) *</label>
+                                <input type="number" id="weeklyNeed" name="weeklyNeed" 
+                                       min="0" step="50" placeholder="800" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Preferred Funding Types</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="fundingTypes" value="loan" checked>
+                                    <span class="checkmark"></span>
+                                    Loan (to be repaid)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="fundingTypes" value="donation">
+                                    <span class="checkmark"></span>
+                                    Donation (no repayment)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="fundingTypes" value="equity">
+                                    <span class="checkmark"></span>
+                                    Equity (business ownership)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="fundingTypes" value="mentorship">
+                                    <span class="checkmark"></span>
+                                    Mentorship & Connections
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Sponsor Profile Form -->
+                    <form id="sponsorProfileForm" class="registration-form profile-form" style="display: none;">
+                        <div class="form-group">
+                            <label for="companyName">Company/Organization Name *</label>
+                            <input type="text" id="companyName" name="companyName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sponsorBio">About Your Organization *</label>
+                            <textarea id="sponsorBio" name="bio" rows="4" required 
+                                placeholder="Tell us about your company, mission, and why you want to sponsor dreamers..."></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="jobTitle">Your Job Title</label>
+                                <input type="text" id="jobTitle" name="jobTitle" 
+                                       placeholder="e.g., CEO, HR Director, Talent Manager">
+                            </div>
+                            <div class="form-group">
+                                <label for="companySize">Company Size</label>
+                                <select id="companySize" name="companySize">
+                                    <option value="">Select size</option>
+                                    <option value="1-10">1-10 employees</option>
+                                    <option value="11-50">11-50 employees</option>
+                                    <option value="51-200">51-200 employees</option>
+                                    <option value="201-1000">201-1000 employees</option>
+                                    <option value="1000+">1000+ employees</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="investmentRangeMin">Investment Range ($) *</label>
+                                <div class="range-inputs">
+                                    <input type="number" id="investmentRangeMin" name="investmentRangeMin" 
+                                           min="0" step="1000" placeholder="Min" required>
+                                    <span>to</span>
+                                    <input type="number" id="investmentRangeMax" name="investmentRangeMax" 
+                                           min="0" step="1000" placeholder="Max" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Preferred Funding Types</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="preferredFundingTypes" value="loan" checked>
+                                    <span class="checkmark"></span>
+                                    Loans (with repayment)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="preferredFundingTypes" value="donation">
+                                    <span class="checkmark"></span>
+                                    Donations (no repayment)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="preferredFundingTypes" value="equity">
+                                    <span class="checkmark"></span>
+                                    Equity investments
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="preferredFundingTypes" value="mentorship">
+                                    <span class="checkmark"></span>
+                                    Mentorship programs
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Industries of Interest</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="industries" value="technology">
+                                    <span class="checkmark"></span>
+                                    Technology
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="industries" value="healthcare">
+                                    <span class="checkmark"></span>
+                                    Healthcare
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="industries" value="education">
+                                    <span class="checkmark"></span>
+                                    Education
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="industries" value="finance">
+                                    <span class="checkmark"></span>
+                                    Finance
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="industries" value="creative">
+                                    <span class="checkmark"></span>
+                                    Creative Arts
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="industries" value="other">
+                                    <span class="checkmark"></span>
+                                    Other
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn secondary" onclick="previousStep()">Back</button>
+                        <button type="button" class="btn primary" onclick="nextStep()">Continue</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Preferences & Verification -->
+            <div id="preferences-step" class="registration-step">
+                <div class="step-header">
+                    <button class="back-btn" onclick="previousStep()">&larr; Back</button>
+                    <h2>Preferences & Verification</h2>
+                    <div class="step-indicator">
+                        <span class="step completed">1</span>
+                        <span class="step completed">2</span>
+                        <span class="step completed">3</span>
+                        <span class="step active">4</span>
+                    </div>
+                </div>
+
+                <div class="step-content">
+                    <form id="preferencesForm" class="registration-form">
+                        <div class="preferences-section">
+                            <h4>Communication Preferences</h4>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="emailNotifications" value="offers" checked>
+                                    <span class="checkmark"></span>
+                                    Email me about new offers and opportunities
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="emailNotifications" value="updates" checked>
+                                    <span class="checkmark"></span>
+                                    Send me platform updates and news
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="emailNotifications" value="tips">
+                                    <span class="checkmark"></span>
+                                    Share tips and success stories
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="emailNotifications" value="marketing">
+                                    <span class="checkmark"></span>
+                                    Marketing and promotional emails
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="preferences-section">
+                            <h4>Privacy Settings</h4>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="privacySettings" value="publicProfile" checked>
+                                    <span class="checkmark"></span>
+                                    Make my profile visible to other users
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="privacySettings" value="showLocation">
+                                    <span class="checkmark"></span>
+                                    Show my location in profile
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="privacySettings" value="allowMessages" checked>
+                                    <span class="checkmark"></span>
+                                    Allow other users to message me
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="verification-section">
+                            <h4>Email Verification</h4>
+                            <div class="verification-info">
+                                <div class="verification-icon">📧</div>
+                                <div class="verification-text">
+                                    <p><strong>We'll send a verification email to:</strong></p>
+                                    <p class="email-display" id="emailDisplay">your-email@example.com</p>
+                                    <p class="verification-note">Please check your inbox and click the verification link to activate your account.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="terms-section">
+                            <label class="checkbox-label terms-checkbox">
+                                <input type="checkbox" name="agreeToTerms" required>
+                                <span class="checkmark"></span>
+                                I agree to the <a href="#" onclick="showTerms()">Terms of Service</a> and <a href="#" onclick="showPrivacy()">Privacy Policy</a>
+                            </label>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn secondary" onclick="previousStep()">Back</button>
+                            <button type="submit" class="btn primary large">Create Account</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Success Step -->
+            <div id="success-step" class="registration-step">
+                <div class="step-content success-content">
+                    <div class="success-icon">🎉</div>
+                    <h2>Account Created Successfully!</h2>
+                    <p class="success-message">Welcome to SponsoraCareer! We've sent a verification email to <strong id="successEmail">your email</strong>.</p>
+                    
+                    <div class="next-steps">
+                        <h4>Next Steps:</h4>
+                        <ol>
+                            <li>Check your email inbox for a verification message</li>
+                            <li>Click the verification link to activate your account</li>
+                            <li>Sign in and complete your profile</li>
+                            <li>Start connecting with the community!</li>
+                        </ol>
+                    </div>
+
+                    <div class="success-actions">
+                        <button class="btn primary" onclick="window.location.href='index.html'">Go to Sign In</button>
+                        <button class="btn secondary" onclick="resendVerification()">Resend Verification Email</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 SponsoraCareer. Connecting dreams with opportunities.</p>
+        </footer>
+    </div>
+
+    <script src="api-client.js"></script>
+    <script src="register.js"></script>
+</body>
+</html>

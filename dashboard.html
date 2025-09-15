@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SponsoraCareer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Navigation Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <h1>SponsoraCareer</h1>
+                    <span class="user-type-badge" id="userTypeBadge">Dreamer</span>
+                </div>
+                <nav class="main-nav">
+                    <button class="nav-btn active" data-section="overview">Overview</button>
+                    <button class="nav-btn" data-section="profile">Profile</button>
+                    <button class="nav-btn" data-section="offers">Offers</button>
+                    <button class="nav-btn" data-section="contracts">Contracts</button>
+                    <button class="nav-btn" data-section="progress">Progress</button>
+                </nav>
+                <div class="user-actions">
+                    <button class="notification-btn">🔔 <span class="notification-count">3</span></button>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Content -->
+        <main class="dashboard-main">
+            <!-- Overview Section -->
+            <section id="overview-section" class="dashboard-section active">
+                <div class="section-header">
+                    <h2>Dashboard Overview</h2>
+                    <p class="welcome-message">Welcome back! Here's your current status.</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-content">
+                            <h3>Total Funding</h3>
+                            <p class="stat-value">$0</p>
+                            <span class="stat-change">+0% this month</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-content">
+                            <h3>Active Offers</h3>
+                            <p class="stat-value">0</p>
+                            <span class="stat-change">No pending offers</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📋</div>
+                        <div class="stat-content">
+                            <h3>Active Contracts</h3>
+                            <p class="stat-value">0</p>
+                            <span class="stat-change">No active contracts</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-content">
+                            <h3>Goal Progress</h3>
+                            <p class="stat-value">0%</p>
+                            <span class="stat-change">Get started!</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <h3>Quick Actions</h3>
+                    <div class="action-buttons">
+                        <button class="action-btn primary" onclick="showSection('profile')">
+                            <span class="btn-icon">👤</span>
+                            Complete Your Profile
+                        </button>
+                        <button class="action-btn secondary" onclick="showSection('offers')">
+                            <span class="btn-icon">📝</span>
+                            Browse Offers
+                        </button>
+                        <button class="action-btn secondary" onclick="openCalculator()">
+                            <span class="btn-icon">🧮</span>
+                            Financial Calculator
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section id="profile-section" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Your Profile</h2>
+                    <p>Complete your profile to attract sponsors</p>
+                </div>
+
+                <div class="profile-form-container">
+                    <form id="profileForm" class="profile-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fullName">Full Name *</label>
+                                <input type="text" id="fullName" name="fullName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="location">Location</label>
+                                <input type="text" id="location" name="location" placeholder="City, State/Country">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bio">Bio *</label>
+                            <textarea id="bio" name="bio" rows="4" required 
+                                placeholder="Tell sponsors about yourself, your background, and what drives you..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="goal">Your Goal *</label>
+                            <textarea id="goal" name="goal" rows="3" required 
+                                placeholder="Describe your career goal and what you want to achieve..."></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="expectedDurationMin">Expected Duration (Months) *</label>
+                                <div class="duration-inputs">
+                                    <input type="number" id="expectedDurationMin" name="expectedDurationMin" 
+                                           min="1" max="60" placeholder="Min" required>
+                                    <span>to</span>
+                                    <input type="number" id="expectedDurationMax" name="expectedDurationMax" 
+                                           min="1" max="60" placeholder="Max" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="weeklyNeed">Weekly Financial Need ($) *</label>
+                                <input type="number" id="weeklyNeed" name="weeklyNeed" 
+                                       min="0" step="50" placeholder="800" required>
+                            </div>
+                        </div>
+
+                        <div class="financial-summary">
+                            <h4>Financial Summary</h4>
+                            <div class="summary-content">
+                                <p>Total funding needed: <span id="totalFundingRange">$0 - $0</span></p>
+                                <p>This will be held in escrow and distributed weekly</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="skills">Skills & Experience</label>
+                            <input type="text" id="skills" name="skills" 
+                                   placeholder="e.g., JavaScript, Marketing, Design, Project Management">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="education">Education</label>
+                            <input type="text" id="education" name="education" 
+                                   placeholder="Your educational background">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Funding Type Preferences</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="fundingTypes" value="loan" checked>
+                                    <span class="checkmark"></span>
+                                    Loan (to be repaid)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="fundingTypes" value="donation">
+                                    <span class="checkmark"></span>
+                                    Donation (no repayment)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="fundingTypes" value="equity">
+                                    <span class="checkmark"></span>
+                                    Equity (business ownership)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="fundingTypes" value="mentorship">
+                                    <span class="checkmark"></span>
+                                    Mentorship & Connections
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="save-profile-btn">Save Profile</button>
+                            <button type="button" class="preview-btn" onclick="previewProfile()">Preview</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Offers Section -->
+            <section id="offers-section" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Sponsor Offers</h2>
+                    <p>Review and manage offers from sponsors</p>
+                </div>
+
+                <div class="offers-container">
+                    <div class="offers-filter">
+                        <select id="offerFilter">
+                            <option value="all">All Offers</option>
+                            <option value="pending">Pending Review</option>
+                            <option value="accepted">Accepted</option>
+                            <option value="declined">Declined</option>
+                        </select>
+                    </div>
+
+                    <div class="offers-list" id="offersList">
+                        <div class="empty-state">
+                            <div class="empty-icon">📭</div>
+                            <h3>No offers yet</h3>
+                            <p>Complete your profile to start receiving offers from sponsors</p>
+                            <button class="action-btn primary" onclick="showSection('profile')">
+                                Complete Profile
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contracts Section -->
+            <section id="contracts-section" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Active Contracts</h2>
+                    <p>Manage your sponsorship agreements</p>
+                </div>
+
+                <div class="contracts-container">
+                    <div class="contracts-list" id="contractsList">
+                        <div class="empty-state">
+                            <div class="empty-icon">📄</div>
+                            <h3>No active contracts</h3>
+                            <p>Accept sponsor offers to create contracts</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Progress Section -->
+            <section id="progress-section" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Goal Progress</h2>
+                    <p>Track your journey and milestones</p>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-overview">
+                        <div class="progress-circle">
+                            <svg class="progress-ring" width="120" height="120">
+                                <circle class="progress-ring-circle" stroke="#e0e0e0" stroke-width="8" 
+                                        fill="transparent" r="52" cx="60" cy="60"/>
+                                <circle class="progress-ring-progress" stroke="#28a745" stroke-width="8" 
+                                        fill="transparent" r="52" cx="60" cy="60" 
+                                        stroke-dasharray="326.73" stroke-dashoffset="326.73"/>
+                            </svg>
+                            <div class="progress-text">
+                                <span class="progress-percentage">0%</span>
+                                <span class="progress-label">Complete</span>
+                            </div>
+                        </div>
+                        <div class="progress-details">
+                            <h3>Your Journey</h3>
+                            <p>Start by completing your profile and setting clear milestones</p>
+                        </div>
+                    </div>
+
+                    <div class="milestones-section">
+                        <h4>Milestones</h4>
+                        <div class="milestones-list" id="milestonesList">
+                            <div class="empty-state">
+                                <p>Set up milestones to track your progress</p>
+                                <button class="action-btn secondary" onclick="addMilestone()">
+                                    Add First Milestone
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Financial Calculator Modal -->
+        <div id="calculatorModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Financial Calculator</h3>
+                    <button class="close-btn" onclick="closeCalculator()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="calculator-form">
+                        <div class="form-group">
+                            <label for="calcWeeklyNeed">Weekly Financial Need ($)</label>
+                            <input type="number" id="calcWeeklyNeed" min="0" step="50" value="800">
+                        </div>
+                        <div class="form-group">
+                            <label for="calcDurationMin">Duration Range (Months)</label>
+                            <div class="duration-inputs">
+                                <input type="number" id="calcDurationMin" min="1" max="60" value="6">
+                                <span>to</span>
+                                <input type="number" id="calcDurationMax" min="1" max="60" value="9">
+                            </div>
+                        </div>
+                        <div class="calculator-results">
+                            <h4>Funding Requirements</h4>
+                            <div class="result-item">
+                                <span>Minimum Total:</span>
+                                <span id="calcMinTotal">$20,800</span>
+                            </div>
+                            <div class="result-item">
+                                <span>Maximum Total:</span>
+                                <span id="calcMaxTotal">$31,200</span>
+                            </div>
+                            <div class="result-item">
+                                <span>Weekly Payment:</span>
+                                <span id="calcWeeklyPayment">$800</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="action-btn secondary" onclick="closeCalculator()">Close</button>
+                    <button class="action-btn primary" onclick="useCalculatorValues()">Use These Values</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="api-client.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>
