@@ -14,7 +14,18 @@
             <div class="header-content">
                 <div class="logo-section">
                     <h1>SponsoraCareer</h1>
-                    <span class="user-type-badge" id="userTypeBadge">Dreamer</span>
+                    <div class="user-badge-dropdown">
+                        <button class="user-type-badge" id="userTypeBadge" onclick="toggleUserDropdown()">
+                            Dreamer
+                            <span class="dropdown-arrow">▼</span>
+                        </button>
+                        <div class="dropdown-menu" id="userDropdownMenu">
+                            <button class="dropdown-item" onclick="openPreferences()">
+                                <span class="dropdown-icon">⚙️</span>
+                                Preferences
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <nav class="main-nav">
                     <button class="nav-btn active" data-section="overview">Overview</button>
@@ -329,6 +340,82 @@
                 <div class="modal-footer">
                     <button class="action-btn secondary" onclick="closeCalculator()">Close</button>
                     <button class="action-btn primary" onclick="useCalculatorValues()">Use These Values</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preferences Modal -->
+        <div id="preferencesModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Dreamer Preferences</h3>
+                    <button class="close-btn" onclick="closePreferences()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="preferencesForm" class="preferences-form">
+                        <div class="form-group">
+                            <label for="prefDuration">Duration (Months) *</label>
+                            <div class="duration-inputs">
+                                <input type="number" id="prefDurationMin" name="prefDurationMin" 
+                                       min="1" max="60" placeholder="Min" required>
+                                <span>to</span>
+                                <input type="number" id="prefDurationMax" name="prefDurationMax" 
+                                       min="1" max="60" placeholder="Max" required>
+                            </div>
+                            <small class="form-hint">The expected duration range for your journey</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="prefOptimalAmount">Optimal Amount ($) *</label>
+                            <input type="number" id="prefOptimalAmount" name="prefOptimalAmount" 
+                                   min="0" step="100" placeholder="e.g., 25000" required>
+                            <small class="form-hint">The ideal total funding amount you're seeking</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="prefServicesRequested">Services Requested</label>
+                            <textarea id="prefServicesRequested" name="prefServicesRequested" 
+                                      rows="4" placeholder="Describe what services or support you're seeking (e.g., mentorship, training, connections, tools, etc.)"></textarea>
+                            <small class="form-hint">Specify any non-financial support you need</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label checkbox-primary">
+                                <input type="checkbox" id="prefDownPayment" name="prefDownPayment" 
+                                       onchange="toggleDownPaymentAmount()">
+                                <span class="checkmark"></span>
+                                Down Payment Required
+                            </label>
+                            <small class="form-hint">Check if you require an upfront down payment</small>
+                        </div>
+
+                        <div class="form-group" id="downPaymentAmountGroup" style="display: none;">
+                            <label for="prefDownPaymentAmount">Down Payment Amount (Up to $)</label>
+                            <input type="number" id="prefDownPaymentAmount" name="prefDownPaymentAmount" 
+                                   min="0" step="100" placeholder="e.g., 5000">
+                            <small class="form-hint">The maximum down payment amount you're requesting</small>
+                        </div>
+
+                        <div class="preferences-summary">
+                            <h4>Preferences Summary</h4>
+                            <div class="summary-item">
+                                <span class="summary-label">Duration:</span>
+                                <span id="summaryDuration">Not set</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Optimal Amount:</span>
+                                <span id="summaryAmount">Not set</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Down Payment:</span>
+                                <span id="summaryDownPayment">Not required</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="action-btn secondary" onclick="closePreferences()">Cancel</button>
+                    <button class="action-btn primary" onclick="savePreferences()">Save Preferences</button>
                 </div>
             </div>
         </div>

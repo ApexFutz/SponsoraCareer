@@ -41,6 +41,11 @@
     margin: 0;
 }
 
+/* User Badge Dropdown */
+.user-badge-dropdown {
+    position: relative;
+}
+
 .user-type-badge {
     background: rgba(255,255,255,0.2);
     padding: 6px 12px;
@@ -48,6 +53,71 @@
     font-size: 0.85rem;
     font-weight: 500;
     backdrop-filter: blur(10px);
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.user-type-badge:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+.dropdown-arrow {
+    font-size: 0.7rem;
+    transition: transform 0.3s ease;
+}
+
+.user-badge-dropdown .dropdown-menu.active .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    min-width: 180px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.dropdown-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-size: 0.9rem;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    border-radius: 8px;
+}
+
+.dropdown-item:hover {
+    background: #f8f9fa;
+}
+
+.dropdown-icon {
+    font-size: 1.1rem;
 }
 
 /* Main Navigation */
@@ -670,6 +740,85 @@
 .result-item span:last-child {
     font-weight: 600;
     color: #007bff;
+}
+
+/* Preferences Modal Styles */
+.preferences-form .form-group {
+    margin-bottom: 20px;
+}
+
+.form-hint {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.85rem;
+    color: #6c757d;
+    font-style: italic;
+}
+
+.checkbox-primary {
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.checkbox-primary:hover {
+    background: #e9ecef;
+}
+
+.checkbox-primary input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.preferences-summary {
+    background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    border-left: 4px solid #667eea;
+}
+
+.preferences-summary h4 {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 1.1rem;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.summary-item:last-child {
+    border-bottom: none;
+}
+
+.summary-label {
+    font-weight: 600;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.summary-item span:last-child {
+    color: #667eea;
+    font-weight: 600;
+}
+
+#downPaymentAmountGroup {
+    margin-left: 30px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 3px solid #667eea;
+}
+
+#downPaymentAmountGroup label {
+    font-size: 0.9rem;
 }
 
 /* Responsive Design */

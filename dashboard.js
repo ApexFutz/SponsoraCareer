@@ -1039,6 +1039,206 @@ function addNotification(title, message, type = 'system', actionUrl = null) {
     }
 }
 
+// User dropdown functions
+function toggleUserDropdown() {
+    const dropdown = document.getElementById('userDropdownMenu');
+    if (dropdown) {
+        dropdown.classList.toggle('active');
+        
+        // Close dropdown when clicking outside
+        if (dropdown.classList.contains('active')) {
+            setTimeout(() => {
+                document.addEventListener('click', closeUserDropdownOnOutsideClick);
+            }, 100);
+        } else {
+            document.removeEventListener('click', closeUserDropdownOnOutsideClick);
+        }
+    }
+}
+
+function closeUserDropdownOnOutsideClick(event) {
+    const dropdown = document.getElementById('userDropdownMenu');
+    const badge = document.getElementById('userTypeBadge');
+    
+    if (dropdown && !dropdown.contains(event.target) && !badge.contains(event.target)) {
+        dropdown.classList.remove('active');
+        document.removeEventListener('click', closeUserDropdownOnOutsideClick);
+    }
+}
+
+// Preferences management
+let preferencesData = {};
+
+function openPreferences() {
+    const modal = document.getElementById('preferencesModal');
+    if (modal) {
+        // Close dropdown
+        const dropdown = document.getElementById('userDropdownMenu');
+        if (dropdown) {
+            dropdown.classList.remove('active');
+        }
+        
+        // Load saved preferences
+        loadPreferencesData();
+        populatePreferencesForm();
+        
+        modal.classList.add('active');
+        
+        // Setup real-time updates for summary
+        setupPreferencesListeners();
+    }
+}
+
+function closePreferences() {
+    const modal = document.getElementById('preferencesModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+}
+
+function loadPreferencesData() {
+    const key = `sponsoracareer_preferences_${currentUser?.email}`;
+    const saved = localStorage.getItem(key);
+    if (saved) {
+        preferencesData = JSON.parse(saved);
+    }
+}
+
+function populatePreferencesForm() {
+    if (!preferencesData || Object.keys(preferencesData).length === 0) return;
+    
+    // Populate form fields
+    if (preferencesData.durationMin) document.getElementById('prefDurationMin').value = preferencesData.durationMin;
+    if (preferencesData.durationMax) document.getElementById('prefDurationMax').value = preferencesData.durationMax;
+    if (preferencesData.optimalAmount) document.getElementById('prefOptimalAmount').value = preferencesData.optimalAmount;
+    if (preferencesData.servicesRequested) document.getElementById('prefServicesRequested').value = preferencesData.servicesRequested;
+    
+    // Handle down payment checkbox and amount
+    if (preferencesData.downPayment) {
+        document.getElementById('prefDownPayment').checked = true;
+        toggleDownPaymentAmount();
+        if (preferencesData.downPaymentAmount) {
+            document.getElementById('prefDownPaymentAmount').value = preferencesData.downPaymentAmount;
+        }
+    }
+    
+    // Update summary
+    updatePreferencesSummary();
+}
+
+function setupPreferencesListeners() {
+    const inputs = ['prefDurationMin', 'prefDurationMax', 'prefOptimalAmount', 'prefDownPaymentAmount'];
+    inputs.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        if (input) {
+            input.removeEventListener('input', updatePreferencesSummary);
+            input.addEventListener('input', updatePreferencesSummary);
+        }
+    });
+    
+    const checkbox = document.getElementById('prefDownPayment');
+    if (checkbox) {
+        checkbox.removeEventListener('change', updatePreferencesSummary);
+        checkbox.addEventListener('change', updatePreferencesSummary);
+    }
+}
+
+function toggleDownPaymentAmount() {
+    const checkbox = document.getElementById('prefDownPayment');
+    const amountGroup = document.getElementById('downPaymentAmountGroup');
+    
+    if (checkbox && amountGroup) {
+        if (checkbox.checked) {
+            amountGroup.style.display = 'block';
+        } else {
+            amountGroup.style.display = 'none';
+            document.getElementById('prefDownPaymentAmount').value = '';
+        }
+        updatePreferencesSummary();
+    }
+}
+
+function updatePreferencesSummary() {
+    const durationMin = parseInt(document.getElementById('prefDurationMin')?.value) || 0;
+    const durationMax = parseInt(document.getElementById('prefDurationMax')?.value) || 0;
+    const optimalAmount = parseFloat(document.getElementById('prefOptimalAmount')?.value) || 0;
+    const downPayment = document.getElementById('prefDownPayment')?.checked;
+    const downPaymentAmount = parseFloat(document.getElementById('prefDownPaymentAmount')?.value) || 0;
+    
+    // Update summary display
+    const summaryDuration = document.getElementById('summaryDuration');
+    if (summaryDuration) {
+        if (durationMin && durationMax) {
+            summaryDuration.textContent = `${durationMin}-${durationMax} months`;
+        } else {
+            summaryDuration.textContent = 'Not set';
+        }
+    }
+    
+    const summaryAmount = document.getElementById('summaryAmount');
+    if (summaryAmount) {
+        if (optimalAmount) {
+            summaryAmount.textContent = formatCurrency(optimalAmount);
+        } else {
+            summaryAmount.textContent = 'Not set';
+        }
+    }
+    
+    const summaryDownPayment = document.getElementById('summaryDownPayment');
+    if (summaryDownPayment) {
+        if (downPayment && downPaymentAmount > 0) {
+            summaryDownPayment.textContent = `Yes, up to ${formatCurrency(downPaymentAmount)}`;
+        } else if (downPayment) {
+            summaryDownPayment.textContent = 'Yes (amount not specified)';
+        } else {
+            summaryDownPayment.textContent = 'Not required';
+        }
+    }
+}
+
+function savePreferences() {
+    const form = document.getElementById('preferencesForm');
+    if (!form) return;
+    
+    // Validate form
+    const durationMin = parseInt(document.getElementById('prefDurationMin')?.value);
+    const durationMax = parseInt(document.getElementById('prefDurationMax')?.value);
+    const optimalAmount = parseFloat(document.getElementById('prefOptimalAmount')?.value);
+    
+    if (!durationMin || !durationMax || !optimalAmount) {
+        showNotification('Please fill in all required fields', 'error');
+        return;
+    }
+    
+    if (durationMin >= durationMax) {
+        showNotification('Maximum duration must be greater than minimum duration', 'error');
+        return;
+    }
+    
+    // Collect preferences data
+    preferencesData = {
+        durationMin: durationMin,
+        durationMax: durationMax,
+        optimalAmount: optimalAmount,
+        servicesRequested: document.getElementById('prefServicesRequested')?.value || '',
+        downPayment: document.getElementById('prefDownPayment')?.checked || false,
+        downPaymentAmount: parseFloat(document.getElementById('prefDownPaymentAmount')?.value) || 0,
+        updatedAt: new Date().toISOString()
+    };
+    
+    // Save to localStorage
+    const key = `sponsoracareer_preferences_${currentUser?.email}`;
+    localStorage.setItem(key, JSON.stringify(preferencesData));
+    
+    // Close modal
+    closePreferences();
+    
+    // Show success message
+    showNotification('Preferences saved successfully!', 'success');
+    
+    console.log('Preferences saved:', preferencesData);
+}
+
 // Logout function
 function logout() {
     if (confirm('Are you sure you want to logout?')) {
